@@ -26,7 +26,32 @@ export const getTechs = () => async dispatch => {
   }
 };
 
-// Set loading to true
+// Add a technician to server action
+export const addTech = tech => async dispatch => {
+  try {
+    setLoading();
+
+    const res = await fetch('/techs', {
+      method: 'POST',
+      body: JSON.stringify(tech),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+    const data = await res.json();
+
+    dispatch({
+      type: ADD_TECH,
+      payload: data
+    });
+  } catch (err) {
+    dispatch({
+      type: TECHS_ERROR,
+      payload: err.response.statusText
+    });
+  }
+};
+
 // set loading to true (action)
 export const setLoading = () => {
   return {
